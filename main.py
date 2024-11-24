@@ -11,18 +11,25 @@ def main():
 
     pygame.init
     pygame.get_init
-
+    clock = pygame.time.Clock() # setting game clock to limit fps 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    game = True
+    run = True
+    dt = 0
     color = (0,0,0)
-    while game == True:
+
+    while run:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
 
         screen.fill(color)
+        #dt = pygame.time.Clock.get_time(clock) / 1000
+        dt=clock.tick(FPS)
+        print(dt/1000)
+        print(f"fps: {pygame.time.Clock.get_fps(clock)}")
         pygame.display.flip()
+        
 
 
 
