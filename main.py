@@ -4,6 +4,8 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame
 from constants import *
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 
 def main():
     print("Starting asteroids!")
@@ -12,12 +14,25 @@ def main():
 
     pygame.init
     pygame.get_init
+
     clock = pygame.time.Clock() # setting game clock to limit fps 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     run = True
     dt = 0
     color = (0,0,0)
+
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
+    
     player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+    #astroid = Asteroid()
+    asteroidfield = AsteroidField()
+
 
     while run:
 
@@ -26,9 +41,15 @@ def main():
                 return
 
         screen.fill(color)
+
         dt=clock.tick(FPS)/1000
-        player.update(dt)
-        player.draw(screen)
+        #player.update(dt)
+        #player.draw(screen)
+        for each in updatable:
+            each.update(dt)
+
+        for item in drawable:
+            item.draw(screen)
         #dt = pygame.time.Clock.get_time(clock) / 1000
         print(dt/1000)
         print(f"fps: {pygame.time.Clock.get_fps(clock)}")
