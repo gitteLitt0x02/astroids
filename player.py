@@ -26,11 +26,14 @@ class Player(CircleShape):
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
+        print("Forward: ",forward)
     
     def shoot(self, dt):
         print("shoot shoot")
-        new_shot = Shot(self.position, SHOT_RADIUS)
-        new_shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOT_SPEED * dt
+        new_shot = Shot(self.position, self.rotation, radius=SHOT_RADIUS)
+        new_shot.velocity += pygame.Vector2(0, PLAYER_SHOT_SPEED).rotate(self.rotation)
+        new_shot.position += new_shot.velocity * dt
+                            
    
     def update(self, dt):
         keys = pygame.key.get_pressed()
